@@ -93,7 +93,12 @@ public class Model {
      * */
     public static boolean emptySpaceExists(Board b) {
         // TODO: Fill in this function.
-
+        for (int i = 0; i < b.size(); i++) {
+            for (int j = 0; j < b.size(); j++) {
+                if (b.tile(i, j) == null)
+                    return true;
+            }
+        }
 
         return false;
     }
@@ -105,7 +110,15 @@ public class Model {
      */
     public static boolean maxTileExists(Board b) {
         // TODO: Fill in this function.
-
+        for (int i = 0; i < b.size(); i++){
+            for (int j = 0; j < b.size(); j++){
+                if (b.tile(i, j) != null){
+                    Tile t = b.tile(i, j);
+                    if (t.value() == MAX_PIECE)
+                        return true;
+                }
+            }
+        }
 
         return false;
     }
@@ -118,7 +131,25 @@ public class Model {
      */
     public static boolean atLeastOneMoveExists(Board b) {
         // TODO: Fill in this function.
-
+        if (emptySpaceExists(b)) {
+            return true;
+        } else {
+            for (int i = 0; i < b.size(); i++){
+                for (int j = 0; j < b.size(); j++){
+                    Tile t = b.tile(i, j);
+                    if (i+1 < b.size()){
+                        Tile down = b.tile(i+1, j);
+                        if (t.value() == down.value())
+                            return true;
+                    }
+                    if (j+1 < b.size()){
+                        Tile right = b.tile(i, j+1);
+                        if (t.value() == right.value())
+                            return true;
+                    }
+                }
+            }
+        }
 
         return false;
     }
@@ -138,6 +169,7 @@ public class Model {
     public void tilt(Side side) {
         // TODO: Modify this.board (and if applicable, this.score) to account
         // for the tilt to the Side SIDE.
+        
 
 
         checkGameOver();
