@@ -169,7 +169,45 @@ public class Model {
     public void tilt(Side side) {
         // TODO: Modify this.board (and if applicable, this.score) to account
         // for the tilt to the Side SIDE.
-        
+        board.setViewingPerspective(side);
+
+        for (int col = 0; col < board.size(); col += 1) {
+            for (int row = board.size() - 1; row >= 0; row--){
+                Tile t = board.tile(col, row);
+                if (t != null){
+                    for (int lowerRow = row - 1; lowerRow >= 0; lowerRow--){
+                        Tile lowerTile = board.tile(col, lowerRow);
+                        if (lowerTile != null){
+                            if (t.value() == lowerTile.value()){
+                                board.move(col, row, lowerTile);
+                                score += 2*t.value();
+                                row = lowerRow;
+                                break;
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int col = 0; col < board.size(); col++){
+            for (int row = board.size()-1; row >= 0; row--){
+                Tile t = board.tile(col, row);
+                if (t == null){
+                    for (int lowerRow = row - 1; lowerRow >= 0; lowerRow--){
+                        Tile lowerTile = board.tile(col, lowerRow);
+                        if (lowerTile != null) {
+                            board.move(col, row, lowerTile);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        board.setViewingPerspective(Side.NORTH);
 
 
         checkGameOver();
