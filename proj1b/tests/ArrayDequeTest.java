@@ -135,18 +135,60 @@ public class ArrayDequeTest {
     }
 
     @Test
-    public void  ReomoveFirstTest() {
+    public void  ReomoveFirstAndRemoveLastTest() {
         Deque<Integer> test = new ArrayDeque<>();
         test.addLast(8);   // [8, 0, 0, 0, 0, 0, 0, 0]
         test.addFirst(24);   // [8, 0, 0, 0, 0, 0, 0, 24]
         test.addLast(33); // [8, 33, 0, 0, 0, 0, 0, 24]
         test.addLast(41);   // [8, 33, 41, 0, 0, 0, 0, 24]
-        test.addFirst(23); // [8, 33, 41, 0, 0, 0, 23, 24]
-        test.removeFirst(); // [8, 33, 41, 0, 0, 0, 24]
-        test.removeFirst(); // [8, 33, 41, 0, 0, 0]
-        test.removeFirst(); // [33, 41, 0, 0, 0]
-        test.removeFirst(); // [41, 0, 0, 0]
-        
+        test.addFirst(23); // [8, 33, 41, null, null, null, 23, 24]
+        test.removeFirst(); // [8, 33, 41, null, null, null, null, 24]
+        test.removeFirst(); // [8, 33, 41, null, null, null, null, null]
+        test.removeFirst(); // [null, 33, 41, null, null, null, null, null]
+        test.removeFirst(); // [null, null, 41, null, null, null, null, null]
+        assertThat(test.toList())
+                .containsExactly(null, null, 41, null, null, null, null, null)
+                .inOrder();
+        test.removeLast();
+        assertThat(test.toList())
+                .containsExactly(null, null, null, null, null, null, null, null)
+                .inOrder();
+        test.addFirst(1);
+        test.addFirst(2);
+        test.addFirst(3);
+        test.addFirst(4);
+        test.addFirst(5);
+        test.addFirst(6);
+        test.addFirst(7);
+        test.addFirst(8);
+        test.addFirst(9);
+        test.addFirst(10);
+        test.addFirst(11);
+        test.addFirst(12);
+        test.addFirst(13);
+        test.addFirst(14);
+        test.addFirst(15);
+        test.addFirst(16);
+        test.addFirst(17);
+        assertThat(test.toList())
+                .containsExactly(16, 15, 14, 13, 12, 11, 10, 9,
+                                            8, 7, 6, 5, 4, 3, 2, 1,
+                                            null, null, null, null, null, null, null, null,
+                                            null, null, null, null, null, null, null, 17)
+                .inOrder();
+        test.removeFirst();
+        test.removeFirst();
+        test.removeFirst();
+        test.removeFirst();
+        test.removeFirst();
+        test.removeFirst();
+        test.removeFirst();
+        test.removeFirst();
+        test.removeFirst();
+        test.removeLast();
+        assertThat(test.toList())
+                .containsExactly(8, 7, 6, 5, 4, 3, 2, null, null, null, null, null, null, null, null, null)
+                .inOrder();
     }
 
 }

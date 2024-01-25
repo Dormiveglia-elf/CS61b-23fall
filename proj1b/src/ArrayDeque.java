@@ -16,10 +16,11 @@ public class ArrayDeque<T> implements Deque<T> {
         size = 0;
     }
 
-    public void resizeUp(int capicity) {
+    /* competible for both resizeUp and resizeDown cases */
+    public void resize(int capicity) {
         T[] temp = (T[]) new Object[capicity];
         for (int i = 0; i < size; i++) {
-            temp[i] = items[(front+i) % size];
+            temp[i] = items[(front+i) % items.length];
         }
         items = temp;
         front = 0;
@@ -37,7 +38,7 @@ public class ArrayDeque<T> implements Deque<T> {
         }
 
         if (size == items.length) {
-            resizeUp(size *  2);
+            resize(size *  2);
         }
 
         if (front == 0){
@@ -60,7 +61,7 @@ public class ArrayDeque<T> implements Deque<T> {
         }
 
         if (size == items.length) {
-            resizeUp(size * 2);
+            resize(size * 2);
         }
 
         if (back == items.length-1) {
@@ -93,14 +94,34 @@ public class ArrayDeque<T> implements Deque<T> {
 
     @Override
     public T removeFirst() {
+        if (items.length >= 16){
+            if ((size-1) * 4 < items.length) {
+                resize(size*2);
+            }
+        }
 
+        T returnVal = items[front];
+        items[front] = null;
+        front = (front + 1) % items.length;
+        size--;
 
-        return null;
+        return returnVal;
     }
 
     @Override
     public T removeLast() {
-        return null;
+        if (items.length >= 16){
+            if ((size-1) * 4 < items.length) {
+                resize(size*2);
+            }
+        }
+
+        T returnVal = items[back];
+        items[back] = null;
+        back = (back-1) % items.length;
+        size--;
+
+        return returnVal;
     }
 
     @Override
@@ -110,6 +131,6 @@ public class ArrayDeque<T> implements Deque<T> {
 
     @Override
     public T getRecursive(int index) {
-        return null;
+        throw new UnsupportedOperationException("No need to implement getRecursive for project 1b");
     }
 }
