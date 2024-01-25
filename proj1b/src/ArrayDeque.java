@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class ArrayDeque<T> implements Deque<T> {
@@ -15,6 +16,16 @@ public class ArrayDeque<T> implements Deque<T> {
         size = 0;
     }
 
+    public void resizeUp(int capicity) {
+        T[] temp = (T[]) new Object[capicity];
+        for (int i = 0; i < size; i++) {
+            temp[i] = items[(front+i) % size];
+        }
+        items = temp;
+        front = 0;
+        back = size - 1;
+    }
+
     @Override
     public void addFirst(T x) {
         if (size == 0) {
@@ -23,6 +34,10 @@ public class ArrayDeque<T> implements Deque<T> {
             items[0] = x;
             size += 1;
             return;
+        }
+
+        if (size == items.length) {
+            resizeUp(size *  2);
         }
 
         if (front == 0){
@@ -44,6 +59,10 @@ public class ArrayDeque<T> implements Deque<T> {
             return;
         }
 
+        if (size == items.length) {
+            resizeUp(size * 2);
+        }
+
         if (back == items.length-1) {
             back = 0;
         } else {
@@ -55,21 +74,27 @@ public class ArrayDeque<T> implements Deque<T> {
 
     @Override
     public List<T> toList() {
-        return null;
+        List<T> returnList = new ArrayList<>();
+        for (int i = 0; i < items.length; i++){
+            returnList.add(items[i]);
+        }
+        return returnList;
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return size == 0 ? true : false;
     }
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
     public T removeFirst() {
+
+
         return null;
     }
 
@@ -80,7 +105,7 @@ public class ArrayDeque<T> implements Deque<T> {
 
     @Override
     public T get(int index) {
-        return null;
+        return items[index];
     }
 
     @Override
