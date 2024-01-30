@@ -25,14 +25,29 @@ public class ArrayDequeTest {
         test.addLast(-2); // [0, 1, -1, 2, -2]
         test.addLast(-2); // [0, 1, -1, 2, -2, -2, -2, -2]
         test.addLast(-2); // [0, 1, -1, 2, -2]
-        test.addLast(-2); // [0, 1, -1, 2, -2]
 
         Deque<Integer> mirror = new ArrayDeque<>();
         for (int i: test) {
             mirror.addLast(i);
         }
 
-        assertThat(mirror.toList()).containsExactly(0, 1, -1, 2, -2, -2, -2, -2).inOrder();
+        assertThat(mirror.toList()).containsExactly(0, 1, -1, 2, -2, -2, -2, null).inOrder();
+    }
+
+    @Test
+    public void testEqualArrayDeque() {
+        Deque<String> ad1 = new ArrayDeque<>();
+        Deque<String> ad2 = new ArrayDeque<>();
+
+        ad1.addLast("front");
+        ad1.addLast("middle");
+        ad1.addLast("back");
+
+        ad2.addLast("front");
+        ad2.addLast("middle");
+        ad2.addLast("back");
+
+        assertThat(ad1).isEqualTo(ad2);
     }
 
 }

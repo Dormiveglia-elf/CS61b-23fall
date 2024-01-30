@@ -157,4 +157,19 @@ public class LinkedListDeque<T> implements Deque<T>{
             return returnItem;
         }
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {return true;}
+        if (other instanceof LinkedListDeque otherDeque) {
+            if (this.size != otherDeque.size) {return false;}
+            for (int i = 0; i < size; i++) {
+                if (this.get(i) != otherDeque.get(i)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
 }

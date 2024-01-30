@@ -161,4 +161,18 @@ public class ArrayDeque<T> implements Deque<T> {
             return returnItem;
         }
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {return true;}
+        if (other instanceof ArrayDeque otherDeque) {
+            if (this.size != otherDeque.size) {return false;}
+            for (int i = 0; i < this.items.length; i++) {
+                if (this.items[i] != otherDeque.items[i])
+                    return false;
+            }
+            return true;
+        }
+        return false;
+    }
 }
