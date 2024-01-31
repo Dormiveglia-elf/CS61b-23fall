@@ -5,10 +5,10 @@ import java.util.Iterator;
 import java.util.List;
 
 public class ArrayDeque<T> implements Deque<T> {
-    private int front;
-    private int back;
-    private int size;
-    private T[] items;
+    protected int front;
+    protected int back;
+    protected int size;
+    protected T[] items;
 
     private static final int START_SIZE = 8;
 
@@ -174,5 +174,10 @@ public class ArrayDeque<T> implements Deque<T> {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return (this.toList()).toString();
     }
 }

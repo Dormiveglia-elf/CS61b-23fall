@@ -172,4 +172,9 @@ public class LinkedListDeque<T> implements Deque<T>{
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return (this.toList()).toString();
+    }
 }
