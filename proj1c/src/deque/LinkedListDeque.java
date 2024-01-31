@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class LinkedListDeque<T> implements Deque<T>{
+public class LinkedListDeque<T> implements Deque<T> {
     public class Node {
         private Node prev;
-        public T item;
+        private T item;
         private Node next;
 
-        public Node (T item) {
+        public Node(T item) {
             this.item = item;
             this.next = this;
             this.prev = this;
@@ -28,14 +28,14 @@ public class LinkedListDeque<T> implements Deque<T>{
             this.prev = node;
         }
 
-        public Node getPrev(){
+        public Node getPrev() {
             return this.prev;
         }
     }
 
     Node sentinel;
     private int size = 0;
-    public LinkedListDeque(){
+    public LinkedListDeque() {
         sentinel = new Node(null);
     }
 
@@ -63,7 +63,7 @@ public class LinkedListDeque<T> implements Deque<T>{
     public List<T> toList() {
         List<T> returnList = new ArrayList<>();
         Node iter = sentinel.next;
-        for (int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++) {
             returnList.add(iter.item);
             iter = iter.getNext();
         }
@@ -72,7 +72,7 @@ public class LinkedListDeque<T> implements Deque<T>{
 
     @Override
     public boolean isEmpty() {
-        return size == 0 ? true : false;
+        return size == 0;
     }
 
     @Override
@@ -107,9 +107,10 @@ public class LinkedListDeque<T> implements Deque<T>{
     @Override
     public T get(int index) {
         Node iter = sentinel.next;
-        for (int i = 0; i < size; i++){
-            if (index == i)
+        for (int i = 0; i < size; i++) {
+            if (index == i) {
                 return iter.item;
+            }
             iter = iter.next;
         }
         return null;
@@ -165,9 +166,13 @@ public class LinkedListDeque<T> implements Deque<T>{
 
     @Override
     public boolean equals(Object other) {
-        if (this == other) {return true;}
+        if (this == other) {
+            return true;
+        }
         if (other instanceof LinkedListDeque otherDeque) {
-            if (this.size != otherDeque.size) {return false;}
+            if (this.size != otherDeque.size) {
+                return false;
+            }
             for (int i = 0; i < size; i++) {
                 if (this.get(i) != otherDeque.get(i)) {
                     return false;

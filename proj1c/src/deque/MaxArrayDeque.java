@@ -2,7 +2,7 @@ package deque;
 
 import java.util.Comparator;
 
-public class MaxArrayDeque<T> extends ArrayDeque{
+public class MaxArrayDeque<T> extends ArrayDeque {
     private final Comparator<T> comparator;
 
     public MaxArrayDeque(Comparator<T> c) {
@@ -19,7 +19,7 @@ public class MaxArrayDeque<T> extends ArrayDeque{
         int pos = front;
         for (int i = 0; i < super.size; i++) {
             T temp = (T) super.items[pos % n];
-            if (comparator.compare(result, temp) <= 0){
+            if (comparator.compare(result, temp) <= 0) {
                 result = temp;
             }
             pos++;
@@ -29,7 +29,9 @@ public class MaxArrayDeque<T> extends ArrayDeque{
     }
 
     public T max(Comparator<T> c) {
-        if (this.isEmpty()) {return null;}
+        if (this.isEmpty()) {
+            return null;
+        }
 
         int n = super.items.length;
         T result = (T) super.items[front];
