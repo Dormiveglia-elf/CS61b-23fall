@@ -124,6 +124,11 @@ public class LinkedListDeque<T> implements Deque<T>{
         }
     }
 
+    @Override
+    public T getFirst() {
+        return sentinel.next.item;
+    }
+
     // Add a helper function to recursively get the element
     private T getRecursive(int index, Node p) {
         if (index == 0) {

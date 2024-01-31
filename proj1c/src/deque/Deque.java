@@ -76,4 +76,6 @@ public interface Deque<T> extends Iterable<T>{
      * @return element at {@code index} in the deque
      */
     T getRecursive(int index);
+
+    T getFirst();
 }

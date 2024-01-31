@@ -5,8 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 
 public class ArrayDeque<T> implements Deque<T> {
-    protected int front;
-    protected int back;
+    public int front;
+    public int back;
     protected int size;
     protected T[] items;
 
@@ -14,6 +14,13 @@ public class ArrayDeque<T> implements Deque<T> {
 
     public ArrayDeque(){
         items = (T[]) new Object[START_SIZE];
+        front = 0;
+        back = 0;
+        size = 0;
+    }
+
+    public ArrayDeque(int capicity){
+        items = (T[]) new Object[capicity];
         front = 0;
         back = 0;
         size = 0;
@@ -179,5 +186,10 @@ public class ArrayDeque<T> implements Deque<T> {
     @Override
     public String toString() {
         return (this.toList()).toString();
+    }
+
+    /* Get the first value of the deque */
+    public T getFirst() {
+        return get(front);
     }
 }
