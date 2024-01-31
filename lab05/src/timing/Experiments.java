@@ -1,6 +1,7 @@
 package timing;
 
 import edu.princeton.cs.algs4.Stopwatch;
+import net.sf.saxon.expr.Component;
 import org.knowm.xchart.QuickChart;
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
@@ -59,9 +60,19 @@ public class Experiments {
         List<Double> times = new ArrayList<>();
         List<Integer> opCounts = new ArrayList<>();
 
-        // TODO: YOUR CODE HERE
+        for (int N = 1000; N <= 128000; N *= 2) {
+            Ns.add(N);
+            opCounts.add(N);
 
-        return null;
+            Stopwatch sw = new Stopwatch();
+            AList<Integer> temp = new AList<>();
+            for (int i = 0; i < N; i++) {
+                temp.addLast(i);
+            }
+            times.add(sw.elapsedTime());
+        }
+
+        return new TimingData(Ns, times, opCounts);
     }
 
 
@@ -70,17 +81,31 @@ public class Experiments {
         List<Double> times = new ArrayList<>();
         List<Integer> opCounts = new ArrayList<>();
 
-        // TODO: YOUR CODE HERE
+        int M = 1000;
+        for (int N = 1000; N <= 128000; N *= 2) {
+            Ns.add(N);
+            opCounts.add(M);
 
-        return null;
+            SLList<Integer> test = new SLList<>();
+            for (int i = 0; i < N; i++) {
+                test.addLast(i);
+            }
+
+            Stopwatch sw = new Stopwatch();
+            for (int i = 0; i < M; i++) {
+                test.getLast();
+            }
+            times.add(sw.elapsedTime());
+        }
+
+        return new TimingData(Ns, times, opCounts);
 
     }
 
     public static void main(String[] args) {
-        // TODO: Modify the following line to change the experiment you're running
-        TimingData td = exampleFibonacciExperiment();
+        TimingData td = timeSLListGetLast();
         // Modify this line to make the chart title make sense
-        String title = "Naive Recursive Fibonacci";
+        String title = "SLList getLast Method";
 
         // Convert "times" (in seconds) and "opCounts" to nanoseconds / op
         List<Double> timesUsPerOp = new ArrayList<>();
