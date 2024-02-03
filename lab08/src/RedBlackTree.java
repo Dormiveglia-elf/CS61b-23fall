@@ -62,23 +62,78 @@ public class RedBlackTree<T extends Comparable<T>> {
     /* Flips the color of node and its children. Assume that NODE has both left
        and right children. */
     void flipColors(RBTreeNode<T> node) {
-        // TODO: YOUR CODE HERE
+        boolean flag = node.isBlack;
+        node.left.isBlack = flag;
+        node.right.isBlack = flag;
+        node.isBlack = !flag;
     }
 
     /* Rotates the given node to the right. Returns the new root node of
        this subtree. For this implementation, make sure to swap the colors
        of the new root and the old root!*/
     RBTreeNode<T> rotateRight(RBTreeNode<T> node) {
-        // TODO: YOUR CODE HERE
-        return null;
+        boolean rootFlag = node.isBlack;
+        RBTreeNode<T> temp = node.left.right;
+        RBTreeNode<T> returnNode = node.left;
+        node.left.right = node;
+
+//        RBTreeNode<T> track = root;
+//        while (track.left != node && track.right != node) {
+//            if (track.item.compareTo(node.item) > 0) {
+//                track = track.left;
+//            }
+//            if (track.item.compareTo(node.item) < 0) {
+//                track = track.right;
+//            }
+//        }
+//
+//        if (track.right == node) {
+//            track.right = node.left;
+//        } else if (track.left == node) {
+//            track.left = node.left;
+//        }
+
+        node.left = temp;
+        if (rootFlag) {
+            node.isBlack = !rootFlag;
+        }
+        returnNode.isBlack = rootFlag;
+
+        return returnNode;
     }
 
     /* Rotates the given node to the left. Returns the new root node of
        this subtree. For this implementation, make sure to swap the colors
        of the new root and the old root! */
     RBTreeNode<T> rotateLeft(RBTreeNode<T> node) {
-        // TODO: YOUR CODE HERE
-        return null;
+        boolean rootFlag = node.isBlack;
+        RBTreeNode<T> temp = node.right.left;
+        RBTreeNode<T> returnNode = node.right;
+        node.right.left = node;
+
+//        RBTreeNode<T> track = root;
+//        while (track.left != node && track.right != node) {
+//            if (track.item.compareTo(node.item) > 0) {
+//                track = track.left;
+//            }
+//            if (track.item.compareTo(node.item) < 0) {
+//                track = track.right;
+//            }
+//        }
+//
+//        if (track.right == node) {
+//            track.right = node.right;
+//        } else if (track.left == node) {
+//            track.left = node.right;
+//        }
+
+        node.right = temp;
+        if (rootFlag) {
+            node.isBlack = !rootFlag;
+        }
+        returnNode.isBlack = rootFlag;
+
+        return returnNode;
     }
 
     public void insert(T item) {
@@ -105,15 +160,26 @@ public class RedBlackTree<T extends Comparable<T>> {
             node.right = insert(node.right, item);
         }
 
-        // TODO: YOUR CODE HERE
-
         // Rotate left operation
+        if (!isRed(node) && node.left == null && isRed(node.right)) {
+            node = rotateLeft(node);
+        }
+
+        if (!isRed(node) && isRed(node.left) && isRed(node.left.right)) {
+            node.left = rotateLeft(node.left);
+        }
 
         // Rotate right operation
+        if (!isRed(node) && isRed(node.left) && isRed(node.left.left)) {
+            node = rotateRight(node);
+        }
 
         // Color flip
+        if (!isRed(node) && isRed(node.left) && isRed(node.right)) {
+            flipColors(node);
+        }
 
-        return null; //fix this return statement
+        return node; //fix this return statement
     }
 
     /* Returns whether the given node is red. Null nodes (children of leaf
