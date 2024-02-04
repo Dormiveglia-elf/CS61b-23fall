@@ -32,18 +32,25 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     private int N; // number of elements in the map
     private int M; // number of buckets
     private double loadFactor;
+    private final int resizeFactor = 2;
 
     /** Constructors */
     public MyHashMap() {
         this.loadFactor = 0.75;
         this.M = 16;
         buckets = new Collection[M];
+        for (int i = 0; i < M; i++) {
+            buckets[i] = createBucket();
+        }
     }
 
     public MyHashMap(int initialCapacity) {
         this.M = initialCapacity;
         this.loadFactor = 0.75;
         buckets = new Collection[M];
+        for (int i = 0; i < M; i++) {
+            buckets[i] = createBucket();
+        }
     }
 
     /**
@@ -57,6 +64,9 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         this.M = initialCapacity;
         buckets = new Collection[M];
         this.loadFactor = loadFactor;
+        for (int i = 0; i < M; i++) {
+            buckets[i] = createBucket();
+        }
     }
 
     /**
@@ -88,6 +98,44 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     @Override
     public void put(K key, V value) {
         int bucketNum = Math.floorMod(key.hashCode(), M);
+        if (get(key) != null) {
+            for (Node j: buckets[bucketNum]) {
+                if (j.key.equals(key)) {
+                    j.value = value;
+                }
+            }
+            return;
+        }
+        buckets[bucketNum].add(new Node(key, value));
+        this.N++;
+        checkResize();
+    }
+
+    private void checkResize() {
+        double currentFactor = (double) this.N / (double)this.M;
+        if (currentFactor < loadFactor) {
+            return;
+        } else {
+            resizeUp();
+        }
+    }
+
+    private void resizeUp() {
+        int tempM = this.M * resizeFactor;
+        Collection<Node>[] tempBuckets = new Collection[tempM];
+        for (int i = 0; i < tempM; i++) {
+            tempBuckets[i] = createBucket();
+        }
+
+        for (int i = 0; i < this.M; i++) {
+            for (Node j: buckets[i]) {
+                K tempKey = j.key;
+                int tempBucketNum = Math.floorMod(tempKey.hashCode(), tempM);
+                tempBuckets[tempBucketNum].add(j);
+            }
+        }
+        buckets = tempBuckets;
+        this.M *= 2;
     }
 
     /** Returns the value to which the specified key is mapped, or null if this
@@ -96,7 +144,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     public V get(K key) {
         for (int i = 0; i < M; i++) {
             for (Node j: buckets[i]) {
-                if (j.key == key) {
+                if (j.key.equals(key)) {
                     return j.value;
                 }
             }
@@ -109,7 +157,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     public boolean containsKey(K key) {
         for (int i = 0; i < M; i++) {
             for (Node j: buckets[i]) {
-                if (j.key == key) {
+                if (j.key.equals(key)) {
                     return true;
                 }
             }
@@ -129,6 +177,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         for (int i = 0; i < M; i++) {
             buckets[i].clear();
         }
+        this.N = 0;
     }
 
     @Override
