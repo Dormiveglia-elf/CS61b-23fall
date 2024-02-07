@@ -29,9 +29,9 @@ public class TimeSeries extends TreeMap<Integer, Double> {
      */
     public TimeSeries(TimeSeries ts, int startYear, int endYear) {
         super();
-        for (Map.Entry<Integer, Double> entry: super.entrySet()) {
+        for (Map.Entry<Integer, Double> entry: ts.entrySet()) {
             if (entry.getKey() >= startYear && entry.getKey() <= endYear) {
-                ts.put(entry.getKey(), entry.getValue());
+                super.put(entry.getKey(), entry.getValue());
             }
         }
     }
