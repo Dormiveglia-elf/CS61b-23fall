@@ -1,19 +1,17 @@
 package main;
 
 import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdIn;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 public class WordNet {
-    private MyGraph myGraph;
-    private HashMap synSets;
+    MyGraph myGraph = new MyGraph();
+    Map<Integer, String[]> synSets1 = new HashMap();
+    Map<String, List<Integer>> synSets2 = new HashMap();
     // wrapper for a graph
 
     public WordNet(String synsetFileName, String hyponymFileName) {
-        myGraph = new MyGraph();
-        synSets = new HashMap();
         // build the graph -> add all the edges
         In in1 = new In(synsetFileName);
         In in2 = new In(hyponymFileName);
@@ -21,7 +19,18 @@ public class WordNet {
         while (in1.hasNextLine()) {
             String nextline = in1.readLine();
             String[] splitLine = nextline.split(",");
-            synSets.put(Integer.valueOf(splitLine[0]), splitLine[1]);
+            String[] synSetsArr = splitLine[1].split(" ");
+
+            synSets1.put(Integer.valueOf(splitLine[0]), synSetsArr);
+
+            for (String s: synSetsArr) {
+                if (!synSets2.containsKey(s)) {
+                    ArrayList<Integer> newList = new ArrayList<>();
+                    newList.add(Integer.valueOf(splitLine[0]));
+                    synSets2.put(s, newList);
+                }
+                synSets2.get(s).add(Integer.valueOf(splitLine[0]));
+            }
         }
 
         while (in2.hasNextLine()) {
@@ -37,4 +46,29 @@ public class WordNet {
     }
 
     // graph helper functions
+    public Set<String> handleSingleWord(String word) {
+        List<Integer> IDs = new ArrayList<>();
+        if (synSets2.containsKey(word)) {
+            for (int i: synSets2.get(word)) {
+                IDs.add(i);
+            }
+        }
+        Set<Integer> allID = new HashSet<>();
+        for (int i: IDs) {
+            myGraph.travelID(i, allID);
+        }
+
+        Set<String> returnSet = new HashSet<>();
+        for (int i: allID) {
+            for (String s: synSets1.get(i)) {
+                returnSet.add(s);
+            }
+        }
+
+        List<String> list = new ArrayList<>(returnSet);
+        Collections.sort(list);
+        returnSet = new LinkedHashSet<>(list);
+
+        return  returnSet;
+    }
 }
