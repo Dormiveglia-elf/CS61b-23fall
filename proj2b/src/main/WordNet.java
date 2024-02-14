@@ -71,4 +71,38 @@ public class WordNet {
 
         return  returnSet;
     }
+
+    public Set<String> handleListWord(List<String> words) {
+        Set<String> returnSet = new HashSet<>();
+        for (String word: words) {
+            List<Integer> IDs = new ArrayList<>();
+            if (synSets2.containsKey(word)) {
+                for (int i : synSets2.get(word)) {
+                    IDs.add(i);
+                }
+            }
+            Set<Integer> allID = new HashSet<>();
+            for (int i : IDs) {
+                myGraph.travelID(i, allID);
+            }
+
+            Set<String> tempSet = new HashSet<>();
+            for (int i : allID) {
+                for (String s : synSets1.get(i)) {
+                    tempSet.add(s);
+                }
+            }
+            if (returnSet.isEmpty()) {
+                returnSet = tempSet;
+            } else {
+                returnSet.retainAll(tempSet);
+            }
+        }
+
+        List<String> list = new ArrayList<>(returnSet);
+        Collections.sort(list);
+        returnSet = new LinkedHashSet<>(list);
+
+        return  returnSet;
+    }
 }

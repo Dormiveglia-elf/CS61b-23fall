@@ -19,8 +19,10 @@ public class HyponymHandler extends NgordnetQueryHandler {
         int lastYear = q.endYear();
 
         String response = "";
-        for (String word: words) {
-            response += wn.handleSingleWord(word).toString();
+        if (words.size() == 1) {
+            response += wn.handleSingleWord(words.get(0));
+        } else {
+            response += wn.handleListWord(words);
         }
 
         return response;
