@@ -2,6 +2,8 @@ package main;
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdIn;
+import ngrams.NGramMap;
+import ngrams.TimeSeries;
 
 import java.util.*;
 
@@ -9,9 +11,10 @@ public class WordNet {
     MyGraph myGraph = new MyGraph();
     Map<Integer, String[]> synSets1 = new HashMap();
     Map<String, List<Integer>> synSets2 = new HashMap();
+    NGramMap popularity;
     // wrapper for a graph
 
-    public WordNet(String synsetFileName, String hyponymFileName) {
+    public WordNet(String synsetFileName, String hyponymFileName, String wordFile, String countFile) {
         // build the graph -> add all the edges
         In in1 = new In(synsetFileName);
         In in2 = new In(hyponymFileName);
@@ -43,6 +46,8 @@ public class WordNet {
             }
             myGraph.add(synsetId, temp);
         }
+
+        popularity = new NGramMap(wordFile, countFile);
     }
 
     // graph helper functions
