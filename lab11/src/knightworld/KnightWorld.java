@@ -5,6 +5,7 @@ import tileengine.TETile;
 
 /**
  * Draws a world consisting of knight-move holes.
+ * For center (x, y), only consider (x-1, y-2), (x+1, y+2), (x-2, y+1), (x+2, y-1) instead of eight points
  */
 public class KnightWorld {
 
