@@ -2,6 +2,7 @@ package knightworld;
 
 import tileengine.TERenderer;
 import tileengine.TETile;
+import tileengine.Tileset;
 
 /**
  * Draws a world consisting of knight-move holes.
@@ -13,10 +14,42 @@ public class KnightWorld {
     // TODO: Add additional instance variables here
 
     public KnightWorld(int width, int height, int holeSize) {
-        // TODO: Fill in this constructor and class, adding helper methods and/or classes as necessary to draw the
-        //  specified pattern of the given hole size for a window of size width x height. If you're stuck on how to
-        //  begin, look at the provided demo code!
+        tiles = new TETile[width][height];
+        int startx = 4;
+        int starty = 0;
+        // initialize with NOTHING, here I choose to use LOCKED_DOR to represent holes
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                tiles[x][y] = Tileset.NOTHING;
+            }
+        }
+        recursiveHoles(startx, starty, holeSize, width, height);
     }
+
+    public void recursiveHoles(int x, int y, int holeSize, int width, int height) {
+        if (x < 0 || x >= width || y < 0 || y >= height || tiles[x][y] == Tileset.FLOWER) {
+            return;
+        }
+        for (int i = 0; i < holeSize; i++) {
+            for (int j = 0; j < holeSize; j++) {
+                int tempX = x + i;
+                int tempY = y + j;
+                if (tempX < 0 || tempX >= width
+                              || tempY < 0
+                              || tempY >= height
+                              || tiles[tempX][tempY] == Tileset.FLOWER) {
+                    continue;
+                }
+                tiles[tempX][tempY] = Tileset.FLOWER;
+            }
+        }
+
+        recursiveHoles(x-2*holeSize, y+holeSize, holeSize, width, height);
+        recursiveHoles(x-holeSize, y-2*holeSize, holeSize, width, height);
+        recursiveHoles(x+holeSize, y+2*holeSize, holeSize, width, height);
+        recursiveHoles(x+2*holeSize, y-holeSize, holeSize, width, height);
+    }
+
 
     /** Returns the tiles associated with this KnightWorld. */
     public TETile[][] getTiles() {
@@ -27,7 +60,7 @@ public class KnightWorld {
         // Change these parameters as necessary
         int width = 50;
         int height = 30;
-        int holeSize = 2;
+        int holeSize = 4;
 
         KnightWorld knightWorld = new KnightWorld(width, height, holeSize);
 
